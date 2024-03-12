@@ -30,7 +30,6 @@ def add_to_cart(request, product_id):
             quantity = 1,
         )
     cart_item.save()
-    print(cart_item.product)
     return redirect('cart')
 
 
