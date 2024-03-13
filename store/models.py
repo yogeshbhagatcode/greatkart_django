@@ -20,3 +20,29 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+
+
+class VariantManager(models.Manager):
+    def color(self):
+        return super(VariantManager, self).filter(variant_category='color', is_active=True)
+    
+    def size(self):
+        return super(VariantManager, self).filter(variant_category='size', is_active=True)
+
+
+variant_category_choices = (
+    ('color', 'Color'),
+    ('size', 'Size'),
+)
+
+class Variant(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    variant_category = models.CharField(max_length=150, choices=variant_category_choices)
+    variant_value = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now=True)
+
+    objects = VariantManager()
+
+    def __unicode__(self):
+        return self.product
